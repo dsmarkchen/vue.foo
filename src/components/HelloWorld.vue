@@ -1,41 +1,68 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <h1>Vue.Foo</h1>
+    <p>{{msg}} </p>
+    <div>
+      <b-table striped hover :items="items"></b-table>
+    </div>
+
+     <Plotly
+      id="plotxy"
+      :data="data"
+      :layout="layout"
+      :display-mode-bar="false"
+    ></Plotly>
+
   </div>
 </template>
 
 <script>
+import { Plotly } from "vue-plotly";
+
+
 export default {
   name: 'HelloWorld',
+  components: {
+    Plotly
+  },
   props: {
     msg: String
-  }
+  },
+  computed: {
+    data() {
+      let res = [];
+      let item = new Object();
+      item.x = [];
+      item.y = [];
+      this.items.forEach((element, index) => {
+        item.x.push(index);
+        item.y.push(element.age);       
+      });
+      
+      item.type = "scatter"
+      res.push(item);
+      return res;
+    }
+  },
+  data() {
+      return {
+        items: [
+          { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
+          { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
+          { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
+          { age: 38, first_name: 'Jami', last_name: 'Carney' }
+        ],
+        layout: {
+          xaxis: {
+            range: [0, 3],
+            tickmode: "linear", //  If "linear", the placement of the ticks is determined by a starting position `tick0` and a tick step `dtick`
+            tick0: 0            
+          },
+          title: "age",
+      },
+
+      }
+    }
 }
 </script>
 
